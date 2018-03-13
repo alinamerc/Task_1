@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Task_1</string>
+    <string name="start_title">Starting</string>
+    <string name="recycle_title">RecyclerView</string>
+    <string name="starting">SplashScreen</string>
+
 </resources>
