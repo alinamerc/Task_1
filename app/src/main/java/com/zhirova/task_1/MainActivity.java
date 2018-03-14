@@ -35,12 +35,6 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-//                Fragment newFragment = new ExampleFragment();
-//                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//                transaction.replace(R.id.fragment_container, newFragment);
-//                transaction.addToBackStack(null);
-//                transaction.commit();
-
                 RecyclerviewFragment recyclerviewFragment = new RecyclerviewFragment();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container, recyclerviewFragment);
