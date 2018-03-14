@@ -1,6 +1,7 @@
 package com.zhirova.task_1;
 
 import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -8,9 +9,22 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
-
+   boolean flag = false;
     private FragmentManager fragmentManager;
+    Handler handler = new Handler(Looper.getMainLooper());
+    Runnable  runnable = new Runnable() {
+        @Override
+        public void run() {
+            flag = true;
+            RecyclerviewFragment recyclerviewFragment = new RecyclerviewFragment();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, recyclerviewFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+        }
 
+        ;
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             StartFragment curFragment = new StartFragment();
-            fragmentTransaction.add(R.id.container, curFragment);
+            fragmentTransaction.replace(R.id.container, curFragment);
             fragmentTransaction.commit();
 
             launchNextFragment();
@@ -30,21 +44,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void launchNextFragment() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                RecyclerviewFragment recyclerviewFragment = new RecyclerviewFragment();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, recyclerviewFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
 
-                Log.d("MAIN", "TROLOLOLO");
-            }
-        }, 2000);
+    private void launchNextFragment() {
+        handler.postDelayed(runnable, 2000);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
+    }
 }
