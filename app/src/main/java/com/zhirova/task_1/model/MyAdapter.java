@@ -2,11 +2,14 @@ package com.zhirova.task_1.model;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.zhirova.task_1.R;
 
 import java.util.List;
@@ -33,10 +36,26 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
     @Override
-    public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
-        Note curNote = notes.get(position);
-        holder.circle.setImageResource(curNote.getImage());
+    public void onBindViewHolder(MyAdapter.MyViewHolder holder, final int position) {
+        final Note curNote = notes.get(position);
         holder.item.setText(context.getResources().getString(R.string.item) + curNote.getId());
+
+        if (curNote.isExistCircle()) {
+            holder.circle.setVisibility(View.VISIBLE);
+            holder.circle.setImageResource(curNote.getImage());
+        }
+        else {
+            holder.circle.setVisibility(View.INVISIBLE);
+        }
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String message = context.getResources().getString(R.string.click_message) + " " + String.valueOf(position + 1);
+                Toast toast = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
 

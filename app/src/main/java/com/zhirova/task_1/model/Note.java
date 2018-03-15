@@ -23,9 +23,20 @@ public class Note {
 
 
     public static void init() {
+        int RESORCES[] = {R.drawable.circle_red, R.drawable.circle_orange, R.drawable.circle_yellow,
+        R.drawable.circle_green, R.drawable.circle_blue, R.drawable.circle_darkblue, R.drawable.circle_purple};
+
+        int resourceID = 1;
         for (int i = 0; i < COUNT; i++) {
-            Note curNote = new Note(i + 1, true, R.drawable.circle_blue);
+            Note curNote;
+            if (resourceID % 8 == 0) {
+                curNote = new Note(i + 1, false, 0);
+                resourceID = 0;
+            } else {
+                curNote = new Note(i + 1, true, RESORCES[resourceID - 1]);
+            }
             allNotes.add(curNote);
+            resourceID++;
         }
     }
 

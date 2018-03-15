@@ -2,5 +2,6 @@
     <string name="app_name">Task_1</string>
     <string name="recycle_title">SplashScreen</string>
     <string name="item">Item_</string>
+    <string name="click_message">You pushed on element</string>
 
 </resources>
