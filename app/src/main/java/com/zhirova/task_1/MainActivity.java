@@ -8,6 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+
+import com.zhirova.task_1.model.Note;
 
 public class MainActivity extends AppCompatActivity {
 

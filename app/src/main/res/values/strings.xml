@@ -3,5 +3,6 @@
     <string name="recycle_title">SplashScreen</string>
     <string name="item">Item_</string>
     <string name="click_message">You pushed on element</string>
+    <string name="delete">Delete</string>
 
 </resources>
