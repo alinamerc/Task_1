@@ -1,8 +1,11 @@
 <resources>
     <string name="app_name">Task_1</string>
     <string name="recycle_title">SplashScreen</string>
-    <string name="item">Item_</string>
     <string name="click_message">You pushed on element</string>
     <string name="delete">Delete</string>
+    <string name="title_question">Deleting</string>
+    <string name="desc_question">Are you sure you want to delete the item</string>
+    <string name="yes">Yes</string>
+    <string name="no">no</string>
 
 </resources>
