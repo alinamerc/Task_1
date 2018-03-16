@@ -63,12 +63,29 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.personId.setText(String.valueOf(position + 1) + ")");
         holder.personName.setText(curPerson.getName());
         holder.personPhone.setText(curPerson.getPhone());
+
+        colorUpdate(holder, position);
     }
 
 
     @Override
     public int getItemCount() {
         return persons.size();
+    }
+
+
+    private void colorUpdate(MyAdapter.MyViewHolder holder, int position) {
+        int RESOURCES[] = {R.drawable.circle_red, R.drawable.circle_orange, R.drawable.circle_yellow,
+                R.drawable.circle_green, R.drawable.circle_blue, R.drawable.circle_darkblue, R.drawable.circle_purple};
+
+        int curIndex = (position + 1) % 8;
+        if (curIndex % 8 == 0) {
+            holder.personCircle.setVisibility(View.INVISIBLE);
+        }
+        else {
+            holder.personCircle.setVisibility(View.VISIBLE);
+            holder.personCircle.setImageResource(RESOURCES[curIndex - 1]);
+        }
     }
 
 
