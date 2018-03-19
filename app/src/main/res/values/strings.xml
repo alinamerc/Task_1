@@ -7,5 +7,11 @@
     <string name="desc_question">Are you sure you want to delete the item</string>
     <string name="yes">Yes</string>
     <string name="no">no</string>
+    <string name="form_title">Filling form</string>
+    <string name="form_name">Name:</string>
+    <string name="form_phone">Phone:</string>
+    <string name="form_same_name">Contact with such name exists!</string>
+    <string name="form_empty_data">There is not enough information!</string>
+    <string name="enter_text">Enter text</string>
 
 </resources>

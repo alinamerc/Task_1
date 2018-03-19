@@ -61,8 +61,15 @@ public class PersonStore {
     }
 
 
-    public void add(Person person){
-
+    public boolean add(Person newPerson){
+        for (int i = 0; i < persons.size(); i++) {
+            Person oldPerson = persons.get(i);
+            if (oldPerson.getName() == newPerson.getName()) {
+                return false;
+            }
+        }
+        persons.add(newPerson);
+        return true;
     }
 
 

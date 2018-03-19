@@ -5,6 +5,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -30,25 +32,11 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
     private MyAdapter adapter;
 
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initUI();
         View root = inflater.inflate(R.layout.fragment_items, container, false);
-
-        root.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Hello Snackbar", Snackbar.LENGTH_LONG).show();
-            }
-        });
-
         return root;
     }
 
@@ -77,7 +65,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(adapter);
-        final FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
+        final FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_items);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
