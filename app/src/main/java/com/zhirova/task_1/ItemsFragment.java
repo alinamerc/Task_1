@@ -2,6 +2,7 @@ package com.zhirova.task_1;
 
 import android.content.DialogInterface;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
@@ -39,7 +40,15 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         initUI();
-        View root = inflater.inflate(R.layout.fragment_recyclerview, container, false);
+        View root = inflater.inflate(R.layout.fragment_items, container, false);
+
+        root.findViewById(R.id.fab).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Hello Snackbar", Snackbar.LENGTH_LONG).show();
+            }
+        });
+
         return root;
     }
 
@@ -65,8 +74,22 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
         adapter = new MyAdapter(getContext());
         adapter.setClickListener(this);
+
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(adapter);
+        final FloatingActionButton floatingActionButton = view.findViewById(R.id.fab);
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0 && floatingActionButton.getVisibility() == View.VISIBLE) {
+                    floatingActionButton.hide();
+                } else if (dy < 0 && floatingActionButton.getVisibility() != View.VISIBLE) {
+                    floatingActionButton.show();
+                }
+            }
+        });
 
         Collections.sort(persons, new Comparator<Person>() {
             @Override
