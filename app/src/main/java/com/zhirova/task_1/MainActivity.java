@@ -1,15 +1,16 @@
 package com.zhirova.task_1;
 
+
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FillingFormFragment.NewItemListener {
 
     private FragmentManager fragmentManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,10 +23,28 @@ public class MainActivity extends AppCompatActivity {
             ItemsFragment curFragment = new ItemsFragment();
 
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, curFragment);
+            fragmentTransaction.replace(R.id.container, curFragment, ItemsFragment.TAG);
             fragmentTransaction.commit();
         }
     }
 
+
+    @Override
+    public void onBackPressed() {
+        if (fragmentManager.getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        } else {
+            fragmentManager.popBackStack();
+        }
+
+    }
+
+    @Override
+    public void onNewItem(String id) {
+        Fragment f = fragmentManager.findFragmentByTag(ItemsFragment.TAG);
+        if(f != null){
+            ((ItemsFragment)f).setNeedScrool(id);
+        }
+    }
 
 }

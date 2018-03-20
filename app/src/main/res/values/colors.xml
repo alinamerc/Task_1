@@ -10,4 +10,13 @@
 
     <color name="textColorDefault">#fa100000</color>
     <color name="textColorPressed">#ffffff</color>
+
+    <color name="circleRed">#f90303</color>
+    <color name="circleOrange">#f98603</color>
+    <color name="circleYellow">#fdf900</color>
+    <color name="circleGreen">#0ea358</color>
+    <color name="circleBlue">#03e4f9</color>
+    <color name="circleDarkBlue">#0328f9</color>
+    <color name="circlePurple">#9b03f9</color>
+
 </resources>

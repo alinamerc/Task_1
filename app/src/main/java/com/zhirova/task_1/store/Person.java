@@ -2,27 +2,25 @@ package com.zhirova.task_1.store;
 
 public class Person {
 
-    private int id;
+    private String id;
     private String name;
     private String phone;
 
 
-    public Person(int id, String name, String phone) {
+    public Person(String id, String name, String phone) {
         this.id = id;
         this.name = name;
         this.phone = phone;
     }
 
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
-
 
     public String getName() {
         return name;

@@ -48,8 +48,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="40dp"
         android:layout_marginTop="24dp"
-        android:scaleX="0.7"
-        android:scaleY="0.7"
-        android:src="@drawable/circle_red"/>
+        android:src="@drawable/ic_camera_black_24dp"
+        android:tint="@color/circleGreen"/>
 
 </RelativeLayout>

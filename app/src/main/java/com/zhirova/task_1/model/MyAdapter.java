@@ -1,6 +1,8 @@
 package com.zhirova.task_1.model;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,14 +14,18 @@ import android.widget.TextView;
 import com.zhirova.task_1.R;
 import com.zhirova.task_1.store.Person;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
-    private Context context;
-    private LayoutInflater inflater;
-    private List<Person> persons;
+
+    private final LayoutInflater inflater;
+    private List<Person> persons = new ArrayList<>();
     private ClickListener clickListener;
+    private Context context;
 
 
     public MyAdapter(Context context) {
@@ -33,6 +39,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         notifyDataSetChanged();
     }
 
+    public int positionById(String id){
+        for(int i = 0; i < persons.size(); i++){
+            if(persons.get(i).getId().equals(id)){
+                return i;
+            }
+        }
+        return -1;
+    }
+
 
     public void setClickListener(ClickListener clickListener) {
         this.clickListener = clickListener;
@@ -43,12 +58,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.category_list_item, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(clickListener != null){
-                    clickListener.onClick((Person)v.getTag());
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if(clickListener != null){
+                clickListener.onClick((Person)v.getTag());
             }
         });
         return holder;
@@ -75,8 +87,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
 
     private void colorUpdate(MyAdapter.MyViewHolder holder, int position) {
-        int RESOURCES[] = {R.drawable.circle_red, R.drawable.circle_orange, R.drawable.circle_yellow,
-                R.drawable.circle_green, R.drawable.circle_blue, R.drawable.circle_darkblue, R.drawable.circle_purple};
+        int RESOURCES[] = {R.color.circleRed, R.color.circleOrange, R.color.circleYellow,
+                R.color.circleGreen, R.color.circleBlue, R.color.circleDarkBlue, R.color.circlePurple};
 
         int curIndex = (position + 1) % 8;
         if (curIndex % 8 == 0) {
@@ -84,16 +96,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }
         else {
             holder.personCircle.setVisibility(View.VISIBLE);
-            holder.personCircle.setImageResource(RESOURCES[curIndex - 1]);
+            holder.personCircle.setColorFilter(ContextCompat.getColor(context, RESOURCES[curIndex - 1]));
         }
     }
 
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView personId;
-        public TextView personName;
-        public TextView personPhone;
-        public ImageView personCircle;
+     static class MyViewHolder extends RecyclerView.ViewHolder {
+        private TextView personId;
+        private TextView personName;
+        private TextView personPhone;
+        private  ImageView personCircle;
 
         MyViewHolder(View view){
             super(view);

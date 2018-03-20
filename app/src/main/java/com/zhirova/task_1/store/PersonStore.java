@@ -2,6 +2,7 @@ package com.zhirova.task_1.store;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PersonStore {
 
@@ -18,45 +19,45 @@ public class PersonStore {
 
 
     private PersonStore(){
-        Person person1 = new Person(1, "Ivanov", "1111");
+        Person person1 = new Person(UUID.randomUUID().toString(), "Ivanov", "1111");
         persons.add(person1);
-        Person person2 = new Person(2, "Smirnov", "2222");
+        Person person2 = new Person(UUID.randomUUID().toString(), "Smirnov", "2222");
         persons.add(person2);
-        Person person3 = new Person(3, "Sidorova", "3333");
+        Person person3 = new Person(UUID.randomUUID().toString(), "Sidorova", "3333");
         persons.add(person3);
-        Person person4 = new Person(4, "Osipov", "4444");
+        Person person4 = new Person(UUID.randomUUID().toString(), "Osipov", "4444");
         persons.add(person4);
-        Person person5 = new Person(5, "Glebova", "5555");
+        Person person5 = new Person(UUID.randomUUID().toString(), "Glebova", "5555");
         persons.add(person5);
-        Person person6 = new Person(6, "Andreev", "6666");
+        Person person6 = new Person(UUID.randomUUID().toString(), "Andreev", "6666");
         persons.add(person6);
-        Person person7 = new Person(7, "Scherbakov", "7777");
+        Person person7 = new Person(UUID.randomUUID().toString(), "Scherbakov", "7777");
         persons.add(person7);
-        Person person8 = new Person(8, "Lazutova", "8888");
+        Person person8 = new Person(UUID.randomUUID().toString(), "Lazutova", "8888");
         persons.add(person8);
-        Person person9 = new Person(9, "Baranov", "9999");
+        Person person9 = new Person(UUID.randomUUID().toString(), "Baranov", "9999");
         persons.add(person9);
-        Person person10 = new Person(10, "Arbyzov", "1010");
+        Person person10 = new Person(UUID.randomUUID().toString(), "Arbyzov", "1010");
         persons.add(person10);
-        Person person11 = new Person(11, "Gladkova", "34534");
+        Person person11 = new Person(UUID.randomUUID().toString(), "Gladkova", "34534");
         persons.add(person11);
-        Person person12 = new Person(12, "Avdeev", "4569678");
+        Person person12 = new Person(UUID.randomUUID().toString(), "Avdeev", "4569678");
         persons.add(person12);
-        Person person13 = new Person(13, "Kozlov", "6732");
+        Person person13 = new Person(UUID.randomUUID().toString(), "Kozlov", "6732");
         persons.add(person13);
-        Person person14 = new Person(14, "Marinina", "564");
+        Person person14 = new Person(UUID.randomUUID().toString(), "Marinina", "564");
         persons.add(person14);
-        Person person15 = new Person(15, "Polykova", "68876");
+        Person person15 = new Person(UUID.randomUUID().toString(), "Polykova", "68876");
         persons.add(person15);
-        Person person16 = new Person(16, "Sopov", "23434");
+        Person person16 = new Person(UUID.randomUUID().toString(), "Sopov", "23434");
         persons.add(person16);
-        Person person17 = new Person(17, "Kolosov", "567569");
+        Person person17 = new Person(UUID.randomUUID().toString(), "Kolosov", "567569");
         persons.add(person17);
-        Person person18 = new Person(18, "Kalyagina", "78978");
+        Person person18 = new Person(UUID.randomUUID().toString(), "Kalyagina", "78978");
         persons.add(person18);
-        Person person19 = new Person(19, "Stepanov", "1231567");
+        Person person19 = new Person(UUID.randomUUID().toString(), "Stepanov", "1231567");
         persons.add(person19);
-        Person person20 = new Person(20, "Sinnikov", "56789");
+        Person person20 = new Person(UUID.randomUUID().toString(), "Sinnikov", "56789");
         persons.add(person20);
     }
 
@@ -73,12 +74,12 @@ public class PersonStore {
     }
 
 
-    public void delete(int id){
+    public void delete(String id){
         for (int i = 0; i < persons.size(); i++) {
             Person curPerson = persons.get(i);
-            int personId = curPerson.getId();
+            String personId = curPerson.getId();
 
-            if (id == personId) {
+            if (id.equals(personId)) {
                 persons.remove(i);
                 break;
             }

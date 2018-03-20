@@ -1,7 +1,10 @@
 package com.zhirova.task_1;
 
 import android.content.DialogInterface;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,12 +29,13 @@ import java.util.List;
 
 
 public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
-
+    public final static String TAG = "ItemsFragment";
     private PersonStore personStore;
     private List<Person> persons;
     private MyAdapter adapter;
     private FloatingActionButton floatingActionButtonItems;
-
+    private String needScroolId;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -45,6 +49,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        recyclerView = view.findViewById(R.id.recycler_view);
         floatingActionButtonItems = view.findViewById(R.id.fab_items);
         recyclerViewConnection(view);
         fabItemsClick();
@@ -58,6 +63,9 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         }
     }
 
+    public void setNeedScrool(String id){
+        this.needScroolId = id;
+    }
 
     private void recyclerViewConnection(View view) {
         personStore = PersonStore.getInstance();
@@ -66,7 +74,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         adapter = new MyAdapter(getContext());
         adapter.setClickListener(this);
 
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        adapter.setData(null);
         recyclerView.setAdapter(adapter);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -88,15 +96,32 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
             }
         });
         adapter.setData(persons);
+      // recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+        Handler h = new Handler(Looper.getMainLooper());
+
+        h.postDelayed(() -> {
+            if(needScroolId != null){
+                int scrollPos = adapter.positionById(needScroolId);
+                recyclerView.smoothScrollToPosition(scrollPos);
+                needScroolId = null;
+            }
+        }, 200);
+
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+    }
 
     @Override
     public void onClick(Person person) {
         if (person == null) return;
 
         String message = getResources().getString(R.string.click_message) + " " + person.getName();
-        Snackbar snackbar = Snackbar.make(getView(), message, Snackbar.LENGTH_LONG);
+        Snackbar snackbar = Snackbar.make(floatingActionButtonItems, message, Snackbar.LENGTH_LONG);
         snackbar.show();
 
         showDialog(person);
@@ -134,6 +159,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
 
     private void fabItemsClick() {
+
         floatingActionButtonItems.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
