@@ -64,7 +64,7 @@ public class PersonStore {
     public boolean add(Person newPerson){
         for (int i = 0; i < persons.size(); i++) {
             Person oldPerson = persons.get(i);
-            if (oldPerson.getName() == newPerson.getName()) {
+            if (oldPerson.getName().equalsIgnoreCase(newPerson.getName())) {
                 return false;
             }
         }

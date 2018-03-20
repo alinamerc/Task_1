@@ -30,6 +30,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
     private PersonStore personStore;
     private List<Person> persons;
     private MyAdapter adapter;
+    private FloatingActionButton floatingActionButtonItems;
 
 
     @Nullable
@@ -44,7 +45,9 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        floatingActionButtonItems = view.findViewById(R.id.fab_items);
         recyclerViewConnection(view);
+        fabItemsClick();
     }
 
 
@@ -65,16 +68,15 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setAdapter(adapter);
-        final FloatingActionButton floatingActionButton = view.findViewById(R.id.fab_items);
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
-                if (dy > 0 && floatingActionButton.getVisibility() == View.VISIBLE) {
-                    floatingActionButton.hide();
-                } else if (dy < 0 && floatingActionButton.getVisibility() != View.VISIBLE) {
-                    floatingActionButton.show();
+                if (dy > 0 && floatingActionButtonItems.getVisibility() == View.VISIBLE) {
+                    floatingActionButtonItems.hide();
+                } else if (dy < 0 && floatingActionButtonItems.getVisibility() != View.VISIBLE) {
+                    floatingActionButtonItems.show();
                 }
             }
         });
@@ -103,7 +105,7 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
     public void showDialog(final Person person) {
         String title = getResources().getString(R.string.title_question);
-        String message = getResources().getString(R.string.desc_question) + " " + (person.getName());
+        String message = getResources().getString(R.string.desc_question) + " " + (person.getName()) + "?";
         String buttonYes = getResources().getString(R.string.yes);
         String buttonNo = getResources().getString(R.string.no);
 
@@ -129,4 +131,24 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
+
+
+    private void fabItemsClick() {
+        floatingActionButtonItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Snackbar.make(view, "Hello, ItemsFragment", Snackbar.LENGTH_LONG).show();
+
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FillingFormFragment curFragment = new FillingFormFragment();
+
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.container, curFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
+    }
+
+
 }

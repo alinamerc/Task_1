@@ -29,7 +29,9 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="30dp"
             android:hint="@string/enter_text"
-            android:textSize="26dp"/>
+            android:textSize="26dp">
+            <requestFocus/>
+        </EditText>
 
         <TextView
             android:id="@+id/form_phone_text_view"
