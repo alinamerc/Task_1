@@ -12,6 +12,7 @@ public class MainActivity extends AppCompatActivity implements FillingFormFragme
 
     private FragmentManager fragmentManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.setTheme(R.style.AppTheme);
@@ -36,15 +37,16 @@ public class MainActivity extends AppCompatActivity implements FillingFormFragme
         } else {
             fragmentManager.popBackStack();
         }
-
     }
+
 
     @Override
     public void onNewItem(String id) {
-        Fragment f = fragmentManager.findFragmentByTag(ItemsFragment.TAG);
-        if(f != null){
-            ((ItemsFragment)f).setNeedScrool(id);
+        Fragment fragment = fragmentManager.findFragmentByTag(ItemsFragment.TAG);
+        if(fragment != null){
+            ((ItemsFragment)fragment).setNeedScroll(id);
         }
     }
+
 
 }

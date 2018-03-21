@@ -11,7 +11,7 @@ public class PersonStore {
 
 
     public static PersonStore getInstance(){
-        if(INSTANCE == null){
+        if (INSTANCE == null){
             INSTANCE = new PersonStore();
         }
         return INSTANCE;

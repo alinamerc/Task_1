@@ -46,8 +46,8 @@ public class PersonDiffUtilCallback extends DiffUtil.Callback {
         Person oldPerson = oldList.get(oldItemPosition);
         Person newPerson = newList.get(newItemPosition);
 
-        return oldPerson.getName().equals(newPerson.getName())
-                && oldPerson.getPhone().equals(newPerson.getPhone());
+        return oldPerson.getName().equals(newPerson.getName()) &&
+                    oldPerson.getPhone().equals(newPerson.getPhone());
     }
 
 

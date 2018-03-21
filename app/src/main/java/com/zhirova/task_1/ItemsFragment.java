@@ -1,10 +1,8 @@
 package com.zhirova.task_1;
 
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -22,41 +20,42 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.zhirova.task_1.diff_util.PersonDiffUtilCallback;
-import com.zhirova.task_1.model.MyAdapter;
+import com.zhirova.task_1.model.ItemsAdapter;
 import com.zhirova.task_1.store.Person;
 import com.zhirova.task_1.store.PersonStore;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 
-public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
+public class ItemsFragment extends Fragment implements ItemsAdapter.ClickListener {
+
     public final static String TAG = "ItemsFragment";
+    private String needScrollId;
     private PersonStore personStore;
-    private List<Person> persons;
-    private MyAdapter adapter;
+
+    private ItemsAdapter adapter;
     private FloatingActionButton floatingActionButtonItems;
-    private String needScroolId;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+
+
+    public void setNeedScroll(String id){
+        this.needScrollId = id;
+    }
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initUI();
-        View root = inflater.inflate(R.layout.fragment_items, container, false);
-        return root;
+        return inflater.inflate(R.layout.fragment_items, container, false);
     }
 
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        recyclerView = view.findViewById(R.id.recycler_view);
-        floatingActionButtonItems = view.findViewById(R.id.fab_items);
-        recyclerViewConnection(view);
-        fabItemsClick();
+        initUI();
     }
 
 
@@ -65,19 +64,19 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         if (toolbar != null) {
             toolbar.setTitle(R.string.recycle_title);
         }
+        recyclerView = getView().findViewById(R.id.recycler_view);
+        floatingActionButtonItems = getView().findViewById(R.id.fab_items);
+        recyclerViewConnection();
+        fabItemsClick();
     }
 
-    public void setNeedScrool(String id){
-        this.needScroolId = id;
-    }
 
-    private void recyclerViewConnection(View view) {
+    private void recyclerViewConnection() {
         personStore = PersonStore.getInstance();
-        persons = personStore.getPersons();
+        List<Person> persons = personStore.getPersons();
 
-        adapter = new MyAdapter(getContext());
+        adapter = new ItemsAdapter(getContext());
         adapter.setClickListener(this);
-
         adapter.setData(null);
         recyclerView.setAdapter(adapter);
 
@@ -94,26 +93,20 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         });
 
         Collections.sort(persons, (person1, person2) -> person1.getName().compareToIgnoreCase(person2.getName()));
-
         adapter.setData(persons);
-        Handler h = new Handler(Looper.getMainLooper());
 
-        h.postDelayed(() -> {
-            if(needScroolId != null){
-                int scrollPos = adapter.positionById(needScroolId);
-                recyclerView.smoothScrollToPosition(scrollPos);
-                needScroolId = null;
+        Handler scrollHandler = new Handler(Looper.getMainLooper());
+        scrollHandler.postDelayed(() -> {
+            if (needScrollId != null){
+                int scrollPos = adapter.positionById(needScrollId);
+                if (scrollPos >= 0) {
+                    recyclerView.smoothScrollToPosition(scrollPos);
+                    needScrollId = null;
+                }
             }
         }, 200);
-
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-    }
 
     @Override
     public void onClick(Person person) {
@@ -140,33 +133,25 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
         builder.setPositiveButton(buttonYes, (dialog, which) -> {
             List<Person> oldList = new ArrayList<>(personStore.getPersons());
-            Log.d("FRAGMENT", "oldList = " + oldList.size());
-
             personStore.delete(person.getId());
-
             List<Person> newList = new ArrayList<>(personStore.getPersons());
-            Log.d("FRAGMENT", "newList = " + newList.size());
 
-            PersonDiffUtilCallback productDiffUtilCallback = new PersonDiffUtilCallback(oldList, newList);
-            DiffUtil.DiffResult productDiffResult = DiffUtil.calculateDiff(productDiffUtilCallback, true);
+            PersonDiffUtilCallback personDiffUtilCallback = new PersonDiffUtilCallback(oldList, newList);
+            DiffUtil.DiffResult personDiffResult = DiffUtil.calculateDiff(personDiffUtilCallback, true);
 
             adapter.setData(personStore.getPersons());
-            productDiffResult.dispatchUpdatesTo(adapter);
+            personDiffResult.dispatchUpdatesTo(adapter);
 
         });
 
         builder.setNegativeButton(buttonNo, (dialog, arg1) -> dialog.dismiss());
-
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
 
 
     private void fabItemsClick() {
-
         floatingActionButtonItems.setOnClickListener(view -> {
-            //Snackbar.make(view, "Hello, ItemsFragment", Snackbar.LENGTH_LONG).show();
-
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
             FillingFormFragment curFragment = new FillingFormFragment();
 

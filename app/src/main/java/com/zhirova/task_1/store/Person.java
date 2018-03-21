@@ -2,7 +2,7 @@ package com.zhirova.task_1.store;
 
 public class Person {
 
-    private String id;
+    private final String id;
     private String name;
     private String phone;
 
@@ -18,9 +18,6 @@ public class Person {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
