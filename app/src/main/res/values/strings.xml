@@ -13,5 +13,6 @@
     <string name="form_same_name">Contact with such name exists!</string>
     <string name="form_empty_data">There is not enough information!</string>
     <string name="enter_text">Enter text</string>
+    <string name="starting">Starting</string>
 
 </resources>
