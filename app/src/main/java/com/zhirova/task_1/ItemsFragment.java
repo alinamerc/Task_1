@@ -14,15 +14,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.zhirova.task_1.diff_util.PersonDiffUtilCallback;
 import com.zhirova.task_1.model.MyAdapter;
 import com.zhirova.task_1.store.Person;
 import com.zhirova.task_1.store.PersonStore;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -89,14 +93,9 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
             }
         });
 
-        Collections.sort(persons, new Comparator<Person>() {
-            @Override
-            public int compare(Person person1, Person person2) {
-                return person1.getName().compareToIgnoreCase(person2.getName());
-            }
-        });
+        Collections.sort(persons, (person1, person2) -> person1.getName().compareToIgnoreCase(person2.getName()));
+
         adapter.setData(persons);
-      // recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
         Handler h = new Handler(Looper.getMainLooper());
 
         h.postDelayed(() -> {
@@ -139,19 +138,24 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
         builder.setMessage(message);
         builder.setCancelable(false);
 
-        builder.setPositiveButton(buttonYes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                personStore.delete(person.getId());
-                adapter.setData(personStore.getPersons());
-            }
+        builder.setPositiveButton(buttonYes, (dialog, which) -> {
+            List<Person> oldList = new ArrayList<>(personStore.getPersons());
+            Log.d("FRAGMENT", "oldList = " + oldList.size());
+
+            personStore.delete(person.getId());
+
+            List<Person> newList = new ArrayList<>(personStore.getPersons());
+            Log.d("FRAGMENT", "newList = " + newList.size());
+
+            PersonDiffUtilCallback productDiffUtilCallback = new PersonDiffUtilCallback(oldList, newList);
+            DiffUtil.DiffResult productDiffResult = DiffUtil.calculateDiff(productDiffUtilCallback, true);
+
+            adapter.setData(personStore.getPersons());
+            productDiffResult.dispatchUpdatesTo(adapter);
+
         });
 
-        builder.setNegativeButton(buttonNo, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int arg1) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton(buttonNo, (dialog, arg1) -> dialog.dismiss());
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -160,19 +164,16 @@ public class ItemsFragment extends Fragment implements MyAdapter.ClickListener {
 
     private void fabItemsClick() {
 
-        floatingActionButtonItems.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Snackbar.make(view, "Hello, ItemsFragment", Snackbar.LENGTH_LONG).show();
+        floatingActionButtonItems.setOnClickListener(view -> {
+            //Snackbar.make(view, "Hello, ItemsFragment", Snackbar.LENGTH_LONG).show();
 
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FillingFormFragment curFragment = new FillingFormFragment();
+            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FillingFormFragment curFragment = new FillingFormFragment();
 
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container, curFragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-            }
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, curFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
         });
     }
 

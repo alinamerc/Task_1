@@ -17,10 +17,8 @@ import com.zhirova.task_1.store.Person;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-
 
     private final LayoutInflater inflater;
     private List<Person> persons = new ArrayList<>();
@@ -36,8 +34,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
     public void setData(List<Person> persons){
         this.persons = persons;
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
+
 
     public int positionById(String id){
         for(int i = 0; i < persons.size(); i++){
